@@ -4,6 +4,16 @@ export default Ember.Route.extend({
   gmail: Ember.inject.service('gmail'),
 
   beforeModel: function() {
-    return this.get('gmail').checkAuth();
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      window.checkAuth = () => {
+        Ember.run(() => {
+          this.get('gmail').checkAuth().then(() => {
+            resolve();
+          });
+        });
+      };
+
+      Ember.$.getScript("https://apis.google.com/js/client.js?onload=checkAuth");
+    });
   }
 });
