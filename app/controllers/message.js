@@ -5,7 +5,9 @@ export default Ember.Controller.extend({
     var payload = this.get('model').payload;
 
     if (payload.parts) {
-      return "Unable to parse multipart message.";
+      return payload.parts.map((part) => {
+        return this.decode(part.body.data);
+      });
     } else {
       var data = payload.body.data;
       return this.decode(data);
