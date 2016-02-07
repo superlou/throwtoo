@@ -1,8 +1,8 @@
 <ul>
 {{#each messages as |message|}}
 <li>
+  {{moment-from-now message.date}}
   {{link-to message.snippet 'message' message.id}}
-  {{message.internalDate}}
 </li>
 {{/each}}
 </ul>

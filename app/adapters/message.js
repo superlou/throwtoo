@@ -6,9 +6,10 @@ export default DS.Adapter.extend({
   findRecord: function(store, type, id, snapshot) {
     return this.get('gmail').message(id).then((response) => {
       return {
-        id: id,
-        snippet: message.snippet,
-        body: this.buildBody(response)
+        id: response.id,
+        snippet: response.snippet,
+        body: this.buildBody(response),
+        date: new Date(0).setUTCSeconds(response.internalDate / 1000)
       }
     });
   },
@@ -19,7 +20,8 @@ export default DS.Adapter.extend({
         return {
           id: message.id,
           snippet: message.snippet,
-          body: this.buildBody(message)
+          body: this.buildBody(message),
+          date: new Date(0).setUTCSeconds(message.internalDate / 1000)
         }
       });
     });
