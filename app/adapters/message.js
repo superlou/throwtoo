@@ -4,12 +4,16 @@ export default DS.Adapter.extend({
   gmail: Ember.inject.service('gmail'),
 
   findRecord: function(store, type, id, snapshot) {
-    return this.get('gmail').message(id).then((response) => {
+    return this.get('gmail').message(id).then((message) => {
+      console.log(message);
       return {
-        id: response.id,
-        snippet: response.snippet,
-        body: this.buildBody(response),
-        date: new Date(0).setUTCSeconds(response.internalDate / 1000)
+        id: message.id,
+        snippet: message.snippet,
+        body: this.buildBody(message),
+        date: new Date(0).setUTCSeconds(message.internalDate / 1000),
+        from: this.findInHeader(message, 'From'),
+        to: this.findInHeader(message, 'To'),
+        subject: this.findInHeader(message, 'Subject')
       }
     });
   },
@@ -21,10 +25,25 @@ export default DS.Adapter.extend({
           id: message.id,
           snippet: message.snippet,
           body: this.buildBody(message),
-          date: new Date(0).setUTCSeconds(message.internalDate / 1000)
+          date: new Date(0).setUTCSeconds(message.internalDate / 1000),
+          from: this.findInHeader(message, 'From'),
+          to: this.findInHeader(message, 'To'),
+          subject: this.findInHeader(message, 'Subject')
         }
       });
     });
+  },
+
+  findInHeader: function(message, name) {
+    var header = message.payload.headers.find((item) => {
+      return item.name == name;
+    });
+
+    if (header) {
+      return header.value;
+    } else {
+      return undefined;
+    }
   },
 
   buildBody: function(response) {
