@@ -81,10 +81,12 @@ export default Ember.Service.extend({
   messagesGet: function(id) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       if (this.get('clientReady')) {
-        var request = window.gapi.client.gmail.users.messages.get({
+        var params = {
           'userId': 'me',
           'id': id
-        });
+        }
+
+        var request = window.gapi.client.gmail.users.messages.get(params);
         request.execute((response) => {
           resolve(response);
         });
@@ -100,5 +102,9 @@ export default Ember.Service.extend({
         return this.messagesGet(item.id);
       }));
     });
+  },
+
+  message: function(id) {
+    return this.messagesGet(id);
   }
 });

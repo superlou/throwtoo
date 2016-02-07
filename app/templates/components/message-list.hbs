@@ -1,7 +1,7 @@
 <ul>
 {{#each messages as |message|}}
 <li>
-  {{{message.snippet}}}
+  {{link-to message.snippet 'message' message.id}}
   {{message.internalDate}}
 </li>
 {{/each}}

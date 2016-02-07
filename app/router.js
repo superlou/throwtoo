@@ -7,6 +7,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('messages');
+  this.route('message', {path: '/message/:message_id'});
 });
 
 export default Router;
