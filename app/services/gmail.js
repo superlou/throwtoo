@@ -9,21 +9,7 @@ export default Ember.Service.extend({
   checkAuth: function() {
     return this.authorize(true);
   },
-  loadGmailClient: function() {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      window.gapi.client.load('gmail', 'v1').then((result) => {
-        Ember.run(null, resolve, result);
-      }, (error) => {
-        Ember.run(null, reject, error);
-      });
-    ).then((result) => {
-      this.set('clientReady', true);
-      return Ember.RSVP.resolve();
-    }).catch((error) => {
-      this.set('clientReady', false);
-      return Ember.RSVP.reject(error);
-    });
-  },
+
   authorize: function(immediate=false) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       window.gapi.auth.authorize({
@@ -36,7 +22,7 @@ export default Ember.Service.extend({
         } else {
           Ember.run(null, resolve);
         }
-      }
+      });
     }).then(() => {
       this.set('needsAuth', false);
       return this.loadGmailClient();
@@ -45,25 +31,39 @@ export default Ember.Service.extend({
     });
   },
 
+  loadGmailClient: function() {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      window.gapi.client.load('gmail', 'v1').then((result) => {
+        Ember.run(null, resolve, result);
+      }, (error) => {
+        Ember.run(null, reject, error);
+      });
+    }).then((result) => {
+      this.set('clientReady', true);
+      return Ember.RSVP.resolve();
+    }).catch((error) => {
+      this.set('clientReady', false);
+      return Ember.RSVP.reject(error);
+    });
+  },
+
   labels: Ember.computed('clientReady', function() {
     if (this.get('clientReady')) {
-      var promise = new Promise((resolve, reject) => {
-        var request = gapi.client.gmail.users.labels.list({'userId': 'me'});
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        var request = window.gapi.client.gmail.users.labels.list({'userId': 'me'});
         request.execute((response) => {
           resolve(response);
         });
       });
-
-      return promise;
     } else {
       return undefined;
     }
   }),
 
   messagesList: function() {
-    return new Promise((resolve, reject) => {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       if (this.get('clientReady')) {
-        var request = gapi.client.gmail.users.messages.list({'userId': 'me'});
+        var request = window.gapi.client.gmail.users.messages.list({'userId': 'me'});
         request.execute((response) => {
           resolve(response);
         });
@@ -74,9 +74,9 @@ export default Ember.Service.extend({
   },
 
   messagesGet: function(id) {
-    return new Promise((resolve, reject) => {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       if (this.get('clientReady')) {
-        var request = gapi.client.gmail.users.messages.get({
+        var request = window.gapi.client.gmail.users.messages.get({
           'userId': 'me',
           'id': id
         });
