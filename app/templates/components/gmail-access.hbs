@@ -1,0 +1,6 @@
+{{#if gmail.needsAuth}}
+<div id="authorize-div">
+  <span>Authorize access to Gmail API</span>
+  <button {{action 'handleAuthClick'}}>Authorize</button>
+</div>
+{{/if}}
