@@ -61,10 +61,14 @@ export default Ember.Service.extend({
     }
   }),
 
-  messagesList: function() {
+  messagesList: function(q) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       if (this.get('clientReady')) {
-        var request = window.gapi.client.gmail.users.messages.list({'userId': 'me'});
+        var params = {'userId': 'me'};
+        if (q) {
+          params.q = q;
+        }
+        var request = window.gapi.client.gmail.users.messages.list(params);
         request.execute((response) => {
           resolve(response);
         });
@@ -90,8 +94,8 @@ export default Ember.Service.extend({
     });
   },
 
-  messages: function() {
-    return this.messagesList().then((result) => {
+  messages: function(q) {
+    return this.messagesList(q).then((result) => {
       return Ember.RSVP.all(result.messages.map((item) => {
         return this.messagesGet(item.id);
       }));
