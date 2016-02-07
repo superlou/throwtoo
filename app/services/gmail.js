@@ -9,32 +9,40 @@ export default Ember.Service.extend({
   checkAuth: function() {
     return this.authorize(true);
   },
-
+  loadGmailClient: function() {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      window.gapi.client.load('gmail', 'v1').then((result) => {
+        Ember.run(null, resolve, result);
+      }, (error) => {
+        Ember.run(null, reject, error);
+      });
+    ).then((result) => {
+      this.set('clientReady', true);
+      return Ember.RSVP.resolve();
+    }).catch((error) => {
+      this.set('clientReady', false);
+      return Ember.RSVP.reject(error);
+    });
+  },
   authorize: function(immediate=false) {
-    var promise = new Promise((resolve, reject) => {
-      gapi.auth.authorize({
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      window.gapi.auth.authorize({
         client_id: this.get('client_id'),
         scope: this.get('scope'),
         immediate: immediate
       }, (authResult) => {
-         if (authResult && !authResult.error) {
-          this.set('needsAuth', false);
-
-          gapi.client.load('gmail', 'v1').then((result) => {
-            this.set('clientReady', true);
-            resolve();
-          }, (error) => {
-            this.set('clientReady', false);
-            reject(error);
-          });
-         } else {
-           this.set('needsAuth', true);
-           reject();
-         }
-      });
+        if(!authResult || authResult.error) {
+          Ember.run(null, reject);
+        } else {
+          Ember.run(null, resolve);
+        }
+      }
+    }).then(() => {
+      this.set('needsAuth', false);
+      return this.loadGmailClient();
+    }).catch(() => {
+      this.set('needsAuth', true);
     });
-
-    return promise;
   },
 
   labels: Ember.computed('clientReady', function() {
