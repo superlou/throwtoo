@@ -1,3 +1,4 @@
+// Wrap 3rd party API callback functions in ember-run-callback
 import Ember from 'ember';
 
 export default Ember.Service.extend({
