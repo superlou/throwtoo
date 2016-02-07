@@ -10,7 +10,7 @@ export default Ember.Route.extend({
   },
 
   model: function(params) {
-    return this.get('gmail').messages(params.q);
+    return this.store.query('message', params.q);
   },
 
   actions: {
