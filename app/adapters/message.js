@@ -5,7 +5,6 @@ export default DS.Adapter.extend({
 
   findRecord: function(store, type, id, snapshot) {
     return this.get('gmail').message(id).then((message) => {
-      console.log(message);
       return {
         id: message.id,
         snippet: message.snippet,

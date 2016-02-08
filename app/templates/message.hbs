@@ -1,11 +1,16 @@
-<div id='message'>
-  <div contenteditable="true">
-    {{model.from}}
+<div id='message_box'>
+  <div id='message'>
+    <div class='subject' contenteditable="true">
+      {{{model.subject}}}
+    </div>
+    <div class='body' contenteditable="true">
+      {{{model.body}}}
+    </div>
+    <div class='from'>
+      <!-- <span class='subtle'>from</span> -->
+      &ndash; <span contenteditable="true">{{model.from}}</span>
+    </div>
   </div>
-  <div contenteditable="true">
-    {{{model.subject}}}
-  </div>
-  <div contenteditable="true">
-    {{{model.body}}}
-  </div>
+  <!-- <div class='quote left-quote'>&ldquo;</div>
+  <div class='quote right-quote'>&rdquo;</div> -->
 </div>
