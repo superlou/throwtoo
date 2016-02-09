@@ -6,6 +6,10 @@ export default Ember.Component.extend({
   actions: {
     handleAuthClick: function() {
       this.get('gmail').authorize();
+    },
+
+    signout: function() {
+      this.get('gmail').signout();
     }
   }
 });

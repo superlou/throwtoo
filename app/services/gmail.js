@@ -27,8 +27,9 @@ export default Ember.Service.extend({
     }).then(() => {
       this.set('needsAuth', false);
       return this.loadGmailClient();
-    }).catch(() => {
+    }).catch((error) => {
       this.set('needsAuth', true);
+      return Ember.RSVP.reject('Not authed');
     });
   },
 
@@ -46,6 +47,15 @@ export default Ember.Service.extend({
       this.set('clientReady', false);
       return Ember.RSVP.reject(error);
     });
+  },
+
+  // Sign out by revoking token, which seems necessary for localhost
+  // Based on http://stackoverflow.com/questions/20446803/google-login-how-to-logout-using-gapi-auth-signout
+  signout: function() {
+    var accessToken = gapi.auth.getToken().access_token;
+    Ember.$.get('https://accounts.google.com/o/oauth2/revoke?token=' + accessToken);
+    gapi.auth.setToken(null);
+    window.gapi.auth.signOut();
   },
 
   labels: Ember.computed('clientReady', function() {

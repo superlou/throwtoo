@@ -3,4 +3,6 @@
   <span>Authorize access to Gmail API</span>
   <button {{action 'handleAuthClick'}}>Authorize</button>
 </div>
+{{else}}
+  <button {{action 'signout'}}>Sign out</button>
 {{/if}}

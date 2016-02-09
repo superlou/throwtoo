@@ -21,7 +21,8 @@ module.exports = function(environment) {
     contentSecurityPolicy: {
       "script-src": "'self' https://apis.google.com",
       "frame-src": "'self' https://accounts.google.com https://content.googleapis.com",
-      "style-src": "'self' 'unsafe-inline'"
+      "style-src": "'self' 'unsafe-inline'",
+      "connect-src": "'self' https://accounts.google.com"
     }
   };
 

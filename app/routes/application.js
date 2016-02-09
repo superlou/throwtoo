@@ -9,15 +9,15 @@ export default Ember.Route.extend({
         Ember.run(() => {
           this.get('gmail').checkAuth().then(() => {
             resolve();
+            this.transitionTo('messages');
+          }).catch((error) => {
+            resolve();
+            this.transitionTo('authorize');
           });
         });
       };
 
       Ember.$.getScript("https://apis.google.com/js/client.js?onload=checkAuth");
     });
-  },
-
-  afterModel: function(model, transition) {
-    this.transitionTo('messages');
   }
 });
