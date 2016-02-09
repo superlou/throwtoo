@@ -2,7 +2,6 @@ body {
   width: 100%;
   height: 100%;
   background: #f2f2f2;
-  background: red;
   font-family: sans-serif;
 }
 
@@ -14,6 +13,12 @@ body {
   left: 0px;
 
   perspective: 1000px;
+}
+
+#message_page {
+  background: red;
+  width: 100%;
+  height: 100%;
 }
 
 #message_box {

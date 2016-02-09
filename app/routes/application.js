@@ -9,7 +9,6 @@ export default Ember.Route.extend({
         Ember.run(() => {
           this.get('gmail').checkAuth().then(() => {
             resolve();
-            this.transitionTo('messages');
           }).catch((error) => {
             resolve();
             this.transitionTo('authorize');
