@@ -1,8 +1,11 @@
-<ul>
+<ul class='message-list'>
 {{#each messages as |message|}}
 <li>
-  {{moment-from-now message.date}}
-  {{link-to message.snippet 'message' message.id}}
+  <div class="summary">
+    <span class='subject'>{{link-to message.subject 'message' message.id}}</span>
+    <span class='date'>{{moment-from-now message.date}}</span>
+  </div>
+  <div class='snippet'>{{message.snippet}}</div>
 </li>
 {{/each}}
 </ul>

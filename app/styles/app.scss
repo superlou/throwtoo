@@ -15,6 +15,34 @@ body {
   perspective: 1000px;
 }
 
+ul.message-list {
+  list-style: none;
+  margin: 20px;
+  padding: 0px;
+
+  -webkit-box-shadow:0 0 2px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  box-shadow:0 0 2px rgba(0, 0, 0, 0.3);
+
+  li {
+    padding: 14px;
+    background: white;
+    border-bottom: 1px solid #f2f2f2;
+  }
+
+  .summary {
+    padding-bottom: 0.4em;
+
+    .date {
+      float: right;
+    }
+  }
+
+  .snippet {
+    font-size: 0.8em;
+  }
+}
+
 #message_page {
   background: red;
   width: 100%;
