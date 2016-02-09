@@ -2,5 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   queryParams: ['q'],
-  q: null
+  q: null,
+  qOneWay: Ember.computed.oneWay('q')
 });
