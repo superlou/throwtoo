@@ -15,5 +15,9 @@ export default Ember.Route.extend({
 
       Ember.$.getScript("https://apis.google.com/js/client.js?onload=checkAuth");
     });
+  },
+
+  afterModel: function(model, transition) {
+    this.transitionTo('messages');
   }
 });
