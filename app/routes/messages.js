@@ -16,6 +16,11 @@ export default Ember.Route.extend({
   actions: {
     setFilter: function(q) {
       this.transitionTo('messages', {queryParams: {q: q}});
+    },
+
+    authorized: function() {
+      console.log('here');
+      this.transitionTo('messages');
     }
   }
 });
