@@ -1,8 +1,13 @@
 {{#if gmail.needsAuth}}
-<div id="authorize-div">
-  <span>Authorize access to Gmail API</span>
+<div class="authorize">
+  <div>
+    This app requires access to read your GMail inbox.  Click below to authorize
+    access via the Google GMail API.
+  </div>
   <button {{action 'handleAuthClick'}}>Authorize</button>
 </div>
 {{else}}
+<div class="signout">
   <button {{action 'signout'}}>Sign out</button>
+</div>
 {{/if}}
